@@ -1,9 +1,16 @@
-import { StyleSheet, View, Animated, Modal } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Animated,
+  Modal,
+  useColorScheme,
+} from "react-native";
 import { Collapsible } from "@/components/Collapsible";
 import { useRef, useState } from "react";
 import PodiumProfiles from "@/components/PodiumProfile";
 import { ProfileView } from "@/components/ProfilesView";
 import GenerateList from "@/components/GenerateList";
+import { Colors } from "@/constants/Colors";
 
 interface profile {
   userName: string;
@@ -15,6 +22,8 @@ interface profile {
 export default function HomeScreen() {
   const [checkingProfiles, setCheckingProfiles] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<profile | null>(null);
+
+  const systemTheme = useColorScheme();
 
   const users = profiles();
   const medalSize = 60;
@@ -59,7 +68,17 @@ export default function HomeScreen() {
           backArrowFunction={() => setCheckingProfiles(false)}
         />
       </Modal>
-      <View style={[styles.headerContainer]}>
+      <View
+        style={[
+          styles.headerContainer,
+          {
+            backgroundColor:
+              systemTheme === "dark"
+                ? Colors.dark.backgroundSpecific
+                : Colors.light.backgroundSpecific,
+          },
+        ]}
+      >
         {/* Navigation collapsible element */}
         <Collapsible title={"Workout Season 2"} Items={sections} />
 
@@ -96,7 +115,15 @@ export default function HomeScreen() {
 
       {/* List of competitors */}
       <Animated.ScrollView
-        style={styles.container}
+        style={[
+          styles.container,
+          {
+            backgroundColor:
+              systemTheme === "dark"
+                ? Colors.dark.backgroundSpecific
+                : Colors.light.backgroundSpecific,
+          },
+        ]}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
@@ -179,6 +206,5 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 20,
     backgroundColor: "#2e2f32",
-    elevation: 5,
   },
 });

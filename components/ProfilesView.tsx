@@ -6,11 +6,13 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
+  useColorScheme,
 } from "react-native";
 import { IntersectionObserver } from "react-native-intersection-observer"; // Import the observer hook
 import { GenerateGraph } from "./Graphic";
 import CirclePercentage from "./GenerateCirclePercent";
 import { useState } from "react";
+import { Colors } from "@/constants/Colors";
 
 interface profile {
   userName: string;
@@ -25,18 +27,22 @@ export function ProfileView({
   userName,
   backArrowFunction,
 }: profile & functionality) {
-  const [isCircleVisible, setIsCircleVisible] = useState(false); // Track visibility
-
-  const handleIntersection = (isVisible: any) => {
-    if (isVisible) {
-      setIsCircleVisible(true); // Trigger animation when visible
-    }
-  };
+  const systemTheme = useColorScheme();
 
   return (
-    <View style={[styles.container, {}]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor:
+            systemTheme === "dark"
+              ? Colors.dark.backgroundBasic
+              : Colors.light.backgroundBasic,
+        },
+      ]}
+    >
       {/* Navigation icons */}
-      <View style={[styles.rowCenter]}>
+      <View style={[styles.rowCenter, { padding: 10 }]}>
         <Ionicons
           size={25}
           name="chevron-back"
@@ -54,7 +60,19 @@ export function ProfileView({
               source={{ uri: userFigure }}
             />
             <View style={[styles.centering, { paddingBottom: 15 }]}>
-              <Text style={[styles.fontTitle, {}]}>{userName}</Text>
+              <Text
+                style={[
+                  styles.fontTitle,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                {userName}
+              </Text>
               <Text style={[styles.fontTiny, {}]}>Lorem, ipsum dolor.</Text>
             </View>
           </View>
@@ -81,16 +99,52 @@ export function ProfileView({
                 ]}
               >
                 <Ionicons name="trophy" color="gold" size={20} />
-                <Text style={[styles.fontMedium, {}]}>1</Text>
+                <Text
+                  style={[
+                    styles.fontMedium,
+                    {
+                      color:
+                        systemTheme === "dark"
+                          ? Colors.dark.text
+                          : Colors.light.text,
+                    },
+                  ]}
+                >
+                  1
+                </Text>
               </View>
               <Text style={[styles.fontTiny, {}]}>Ranking</Text>
             </View>
             <View style={[styles.centering, {}]}>
-              <Text style={[styles.fontMedium, {}]}>3 214</Text>
+              <Text
+                style={[
+                  styles.fontMedium,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                3 214
+              </Text>
               <Text style={[styles.fontTiny, {}]}>Points</Text>
             </View>
             <View style={[styles.centering, {}]}>
-              <Text style={[styles.fontMedium, {}]}>24</Text>
+              <Text
+                style={[
+                  styles.fontMedium,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                24
+              </Text>
               <Text style={[styles.fontTiny, {}]}>Goal streaks</Text>
             </View>
           </View>
@@ -99,7 +153,10 @@ export function ProfileView({
           <View
             style={{
               flexDirection: "row",
-              backgroundColor: "#2F3133",
+              backgroundColor:
+                systemTheme === "dark"
+                  ? Colors.dark.backgroundSpecific
+                  : Colors.light.backgroundSpecific,
               paddingHorizontal: 30,
               paddingBottom: 20,
               marginTop: 40,
@@ -131,11 +188,15 @@ export function ProfileView({
             <View style={{ gap: 20, marginLeft: 20 }}>
               <View>
                 <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "700",
-                    color: "#fff",
-                  }}
+                  style={[
+                    styles.fontSmall,
+                    {
+                      color:
+                        systemTheme === "dark"
+                          ? Colors.dark.text
+                          : Colors.light.text,
+                    },
+                  ]}
                 >
                   Sarah Stratfor
                 </Text>
@@ -143,11 +204,35 @@ export function ProfileView({
               </View>
               <View style={{ flexDirection: "row", gap: 30 }}>
                 <View>
-                  <Text style={[styles.fontSmall, {}]}>241</Text>
+                  <Text
+                    style={[
+                      styles.fontSmall,
+                      {
+                        color:
+                          systemTheme === "dark"
+                            ? Colors.dark.text
+                            : Colors.light.text,
+                      },
+                    ]}
+                  >
+                    241
+                  </Text>
                   <Text style={[styles.fontTiny, {}]}>Students</Text>
                 </View>
                 <View>
-                  <Text style={[styles.fontSmall, {}]}>24</Text>
+                  <Text
+                    style={[
+                      styles.fontSmall,
+                      {
+                        color:
+                          systemTheme === "dark"
+                            ? Colors.dark.text
+                            : Colors.light.text,
+                      },
+                    ]}
+                  >
+                    24
+                  </Text>
                   <Text style={[styles.fontTiny, {}]}>Champions</Text>
                 </View>
               </View>
@@ -170,7 +255,14 @@ export function ProfileView({
                 <Text style={[styles.fontTiny]}>Current</Text>
               </View>
               <View style={[styles.rowCenter, { gap: 5 }]}>
-                <Ionicons name="radio-button-on" color={"#8f8f8f"} />
+                <Ionicons
+                  name="radio-button-on"
+                  color={
+                    systemTheme === "dark"
+                      ? Colors.dark.backgroundSpecific
+                      : Colors.light.backgroundSpecific
+                  }
+                />
                 <Text style={[styles.fontTiny]}>Goal</Text>
               </View>
             </View>
@@ -183,7 +275,16 @@ export function ProfileView({
         </View>
 
         {/* Fotter of the profile */}
-        <View style={[{ backgroundColor: "#2F3133" }]}>
+        <View
+          style={[
+            {
+              backgroundColor:
+                systemTheme === "dark"
+                  ? Colors.dark.backgroundSpecific
+                  : Colors.light.backgroundSpecific,
+            },
+          ]}
+        >
           {/* Steps indicator */}
           <View
             style={[
@@ -191,14 +292,27 @@ export function ProfileView({
             ]}
           >
             <Text style={[styles.fontTiny, {}]}>Steps</Text>
-            <Text style={[styles.fontHiuge]}>11 476</Text>
+            <Text
+              style={[
+                styles.fontHiuge,
+                {
+                  color:
+                    systemTheme === "dark"
+                      ? Colors.dark.text
+                      : Colors.light.text,
+                },
+              ]}
+            >
+              11 476
+            </Text>
           </View>
 
           {/* Basic stats random change*/}
           <View
             style={[
               {
-                borderColor: "#fff",
+                borderColor:
+                  systemTheme === "dark" ? Colors.dark.text : Colors.light.text,
                 borderBottomWidth: 0.5,
                 borderTopWidth: 0.5,
                 flexDirection: "row",
@@ -209,27 +323,91 @@ export function ProfileView({
           >
             <View style={[styles.centering, { padding: 10 }]}>
               <Text style={[styles.fontTiny, {}]}>Kilometers</Text>
-              <Text style={[styles.fontMedium, {}]}>7.8</Text>
+              <Text
+                style={[
+                  styles.fontMedium,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                7.8
+              </Text>
             </View>
             <View
-              style={[{ borderLeftWidth: 0.5, borderColor: "#fff" }]}
+              style={[
+                {
+                  borderLeftWidth: 0.5,
+                  borderColor:
+                    systemTheme === "dark"
+                      ? Colors.dark.text
+                      : Colors.light.text,
+                },
+              ]}
             ></View>
             <View style={[styles.centering, { padding: 10 }]}>
               <Text style={[styles.fontTiny, {}]}>Calories</Text>
-              <Text style={[styles.fontMedium, {}]}>252</Text>
+              <Text
+                style={[
+                  styles.fontMedium,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                252
+              </Text>
             </View>
             <View
-              style={[{ borderLeftWidth: 0.5, borderColor: "#fff" }]}
+              style={[
+                {
+                  borderLeftWidth: 0.5,
+                  borderColor:
+                    systemTheme === "dark"
+                      ? Colors.dark.text
+                      : Colors.light.text,
+                },
+              ]}
             ></View>
             <View style={[styles.centering, { padding: 10 }]}>
               <Text style={[styles.fontTiny, {}]}>Points</Text>
-              <Text style={[styles.fontMedium, {}]}>73</Text>
+              <Text
+                style={[
+                  styles.fontMedium,
+                  {
+                    color:
+                      systemTheme === "dark"
+                        ? Colors.dark.text
+                        : Colors.light.text,
+                  },
+                ]}
+              >
+                73
+              </Text>
             </View>
           </View>
 
           {/* Final references */}
           <View style={[{ padding: 20, gap: 20 }]}>
-            <Text style={[styles.fontMedium]}>Exercise Done</Text>
+            <Text
+              style={[
+                styles.fontMedium,
+                {
+                  color:
+                    systemTheme === "dark"
+                      ? Colors.dark.text
+                      : Colors.light.text,
+                },
+              ]}
+            >
+              Exercise Done
+            </Text>
             <View style={[styles.rowCenter]}>
               <CirclePercentage
                 duration={2000}
@@ -244,10 +422,10 @@ export function ProfileView({
                 resizeMode="cover" // Options: "cover", "contain", "stretch"
               >
                 <View style={[{ padding: 20, justifyContent: "center" }]}>
-                  <Text style={[styles.fontMedium, {}]}>
-                    Cobra Lift
+                  <Text style={[styles.fontMedium, {}]}>Cobra Lift</Text>
+                  <Text style={[styles.fontTiny, { color: "#fff" }]}>
+                    With Sarah Stratfor
                   </Text>
-                  <Text style={[styles.fontTiny, { color: "#fff" }]}>With Sarah Stratfor</Text>
                 </View>
               </ImageBackground>
             </View>

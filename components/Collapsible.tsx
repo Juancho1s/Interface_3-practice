@@ -7,6 +7,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Modal,
+  useColorScheme,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
@@ -17,17 +18,37 @@ export function Collapsible({
 }: PropsWithChildren & { title: string } & { Items: Array<string> }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const systemTheme = useColorScheme();
+
   return (
-    <View style={styles.header}>
+    <View
+      style={[
+        styles.header,
+        {
+          backgroundColor:
+            systemTheme === "dark"
+              ? Colors.dark.backgroundSpecific
+              : Colors.light.backgroundSpecific,
+        },
+      ]}
+    >
       {isOpen === false && (
         <TouchableOpacity
           style={styles.heading}
           onPress={() => setIsOpen(true)}
           activeOpacity={0.8}
         >
-          <ThemedText type="defaultSemiBold" style={styles.title}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color:
+                  systemTheme === "dark" ? Colors.dark.text : Colors.light.text,
+              },
+            ]}
+          >
             {title}
-          </ThemedText>
+          </Text>
           <Ionicons name={"chevron-down"} size={26} color={Colors.light.icon} />
         </TouchableOpacity>
       )}
@@ -37,7 +58,17 @@ export function Collapsible({
         <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
           <View style={styles.overlay}>
             <TouchableWithoutFeedback>
-              <View style={styles.collapsibleContent}>
+              <View
+                style={[
+                  styles.collapsibleContent,
+                  {
+                    backgroundColor:
+                      systemTheme === "dark"
+                        ? Colors.dark.backgroundSpecific
+                        : Colors.light.backgroundSpecific,
+                  },
+                ]}
+              >
                 {Items.map((item, index) => (
                   <TouchableOpacity
                     style={[styles.section]}
@@ -48,7 +79,14 @@ export function Collapsible({
                     <Text
                       style={[
                         styles.sectionText,
-                        { color: item === title ? "#fff" : "#8f8f8f" },
+                        {
+                          color:
+                            item === title
+                              ? systemTheme === "dark"
+                                ? Colors.dark.text
+                                : Colors.light.text
+                              : "#8f8f8f",
+                        },
                       ]}
                     >
                       {item}
@@ -74,6 +112,8 @@ export function Collapsible({
 }
 
 export function RandPosition(isSelected: boolean) {
+  const systemTheme = useColorScheme();
+
   const randomPosition = Math.floor(Math.random() * 10) + 1;
   const medalSize = 36;
 
@@ -92,7 +132,11 @@ export function RandPosition(isSelected: boolean) {
             alignItems: "center",
             fontSize: 18,
             fontWeight: "900",
-            color: isSelected ? "#fff" : "#8f8f8f",
+            color: isSelected
+              ? systemTheme === "dark"
+                ? Colors.dark.text
+                : Colors.light.text
+              : "#8f8f8f",
           }}
         >
           {randomPosition}
@@ -113,8 +157,9 @@ const styles = StyleSheet.create({
   collapsibleContent: {
     gap: 30,
     width: "100%",
-    backgroundColor: Colors.dark.background,
+    backgroundColor: Colors.dark.backgroundSpecific,
     padding: 20,
+    justifyContent: "center",
   },
 
   heading: {
@@ -124,7 +169,7 @@ const styles = StyleSheet.create({
 
   header: {
     marginBottom: 20,
-    backgroundColor: Colors.dark.background,
+    backgroundColor: Colors.dark.backgroundBasic,
   },
   title: {
     fontSize: 25,
@@ -132,7 +177,11 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
 
-  section: { flexDirection: "row", justifyContent: "space-between" },
+  section: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   sectionText: {
     justifyContent: "center",
     alignItems: "center",

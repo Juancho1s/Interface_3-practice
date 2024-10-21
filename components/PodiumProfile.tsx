@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, Text,  StyleSheet, TouchableOpacity, useColorScheme, View } from "react-native";
 import { ThemedText } from "./ThemedText";
+import { Colors } from "@/constants/Colors";
 
 interface profile {
   userName: string;
@@ -28,6 +29,9 @@ export default function PodiumProfiles({
   medalColor,
   checkingProfile,
 }: profileProps & Props) {
+
+  const systemTheme = useColorScheme();
+
   return (
     <View style={[styles.basicPodiumsContainer]}>
       <TouchableOpacity
@@ -48,14 +52,15 @@ export default function PodiumProfiles({
         />
         <View style={[styles.basicPodiumsContainer, { flex: 0 }]}>
           <Ionicons name="medal" size={medalSize} color={medalColor} />
-          <ThemedText
+          <Text
             numberOfLines={1}
-            // ellipsizeMode="tail"
-            lightColor="#fff"
-            style={styles.userName}
+            style={[styles.userName, {
+              // color: systemTheme === "dark" ? Colors.dark.text : Colors.light.text
+              color: "black"
+            }]}
           >
             {profile.userName}
-          </ThemedText>
+          </Text>
           <ThemedText lightColor="#fff" style={styles.userScore}>
             {profile.userScore}
           </ThemedText>

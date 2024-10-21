@@ -1,5 +1,6 @@
+import { Colors } from "@/constants/Colors";
 import React, { useEffect, useRef } from "react";
-import { Animated, View, StyleSheet, Text } from "react-native";
+import { Animated, View, StyleSheet, Text, useColorScheme } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 
 // Wrap the Circle in Animated.createAnimatedComponent to make it animatable
@@ -10,10 +11,15 @@ interface circleProps {
   radius: number;
   strokeWidth: number;
   duration: number; // Increased duration for smoother animation
-
 }
 
-export default function CirclePercentage({percentage, radius, strokeWidth, duration}: circleProps) {
+export default function CirclePercentage({
+  percentage,
+  radius,
+  strokeWidth,
+  duration,
+}: circleProps) {
+  const systemTheme = useColorScheme();
 
   const circumference = 2 * Math.PI * radius;
   const halfCircle = radius + strokeWidth;
@@ -62,10 +68,19 @@ export default function CirclePercentage({percentage, radius, strokeWidth, durat
           fill="none"
         />
       </Svg>
-      
+
       {/* Percentage Text */}
       <View style={styles.textContainer}>
-        <Text style={[styles.percentageText, {fontSize: radius / 1.5}]}>{`${percentage}`}</Text>
+        <Text
+          style={[
+            styles.percentageText,
+            {
+              fontSize: radius / 1.5,
+              color:
+                systemTheme === "dark" ? Colors.dark.text : Colors.light.text,
+            },
+          ]}
+        >{`${percentage}`}</Text>
       </View>
     </View>
   );

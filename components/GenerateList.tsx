@@ -1,5 +1,6 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet, useColorScheme } from "react-native";
 import { ThemedText } from "./ThemedText";
+import { Colors } from "@/constants/Colors";
 
 interface profile {
   userName: string;
@@ -13,11 +14,24 @@ interface ProfileProps {
 }
 
 export default function GenerateList({ profiles }: ProfileProps) {
+  const systemTheme = useColorScheme();
+
   return (
     <View>
       {/* ProfileCard structure */}
       {profiles.map((user: profile, index: number) => (
-        <View style={styles.cardContainer} key={`Compettitor-Number-${index}`}>
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              backgroundColor:
+                systemTheme === "dark"
+                  ? Colors.dark.backgroundBasic
+                  : Colors.light.backgroundBasic,
+            },
+          ]}
+          key={`Compettitor-Number-${index}`}
+        >
           <View style={styles.positionContainer}>
             <ThemedText
               lightColor="#fff"
@@ -29,7 +43,13 @@ export default function GenerateList({ profiles }: ProfileProps) {
           <View
             style={[
               styles.usersContainer,
-              index < profiles.length - 1 && styles.separatorLine, // Apply line only between cards
+              index < profiles.length - 1 && styles.separatorLine,
+              {
+                borderColor:
+                  systemTheme === "dark"
+                    ? "rgba(255,255,255,.1)"
+                    : "rgba(128,128,128,0.1)",
+              }, // Apply line only between cards
             ]}
           >
             <View style={styles.UserBasic}>
@@ -43,9 +63,19 @@ export default function GenerateList({ profiles }: ProfileProps) {
 
               {/* Basic information */}
               <View>
-                <ThemedText lightColor="#fff" style={styles.userName}>
+                <Text
+                  style={[
+                    styles.userName,
+                    {
+                      color:
+                        systemTheme === "dark"
+                          ? Colors.dark.text
+                          : Colors.light.text,
+                    },
+                  ]}
+                >
                   {user.userName}
-                </ThemedText>
+                </Text>
                 <ThemedText lightColor="#fff" style={styles.userScore}>
                   {user.userScore}
                 </ThemedText>

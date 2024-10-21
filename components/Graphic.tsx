@@ -1,10 +1,20 @@
+import { Colors } from "@/constants/Colors";
 import { useEffect, useRef } from "react";
-import { Dimensions, View, Text, Animated, Easing } from "react-native";
+import {
+  Dimensions,
+  View,
+  Text,
+  Animated,
+  Easing,
+  useColorScheme,
+} from "react-native";
 import Svg, { Line, Path } from "react-native-svg";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 export function GenerateGraph() {
+  const systemTheme = useColorScheme();
+
   // Create animation values for the path
   const dashOffset = useRef(new Animated.Value(1750)).current;
   const fillOpacity = useRef(new Animated.Value(0)).current; // New animated value for fill opacity
@@ -47,7 +57,7 @@ export function GenerateGraph() {
   ];
 
   return (
-    <View style={[{  }]}>
+    <View style={[{}]}>
       <Svg height={160} width={deviceWidth + 2} viewBox="0 0 1440 320">
         {/* Static Goal Path */}
         <Path
@@ -55,17 +65,21 @@ export function GenerateGraph() {
           stroke="#8f8f8f"
           strokeWidth="8"
           strokeOpacity={0.2}
-          fill="#2F3133"
+          fill={
+            systemTheme === "dark"
+              ? Colors.dark.backgroundSpecific
+              : Colors.light.backgroundSpecific
+          }
           transform="scale(1, 1.5)" // Scale y-axis by 1.5 times
         />
 
         {/* Animated Current Path */}
         <AnimatedPath
           d={pathData_Current}
-          stroke="#51d1f6"
+          stroke={systemTheme === "dark" ? "#51d1f6" : "blue"}
           strokeWidth="8"
           strokeOpacity={1}
-          fill="#51d1f6"
+          fill={systemTheme === "dark" ? "#51d1f6" : "blue"}
           fillOpacity={fillOpacity} // Use animated value for fill opacity
           transform="scale(1, 1.5)" // Scale y-axis by 1.5 times
           strokeDasharray="1750" // Length of the path
@@ -86,12 +100,14 @@ export function GenerateGraph() {
           />
         ))}
       </Svg>
-      {GenerateDays()}
+      {GenerateDays(systemTheme === "dark")}
     </View>
   );
 }
 
-export function GenerateDays() {
+export function GenerateDays(isDark: boolean) {
+  const systemTheme = useColorScheme();
+
   const days: Array<string> = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
   return (
@@ -100,14 +116,21 @@ export function GenerateDays() {
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: 20,
-        backgroundColor: "#2F3133",
+        backgroundColor: isDark
+          ? Colors.dark.backgroundSpecific
+          : Colors.light.backgroundSpecific,
       }}
     >
       {days.map((day, index) => (
         <Text
           key={`day-${index}`}
           style={{
-            color: day === "SA" ? "#fff" : "#8f8f8f",
+            color:
+              day === "SA"
+                ? isDark
+                  ? Colors.dark.text
+                  : Colors.light.text
+                : "#8f8f8f",
             fontSize: 14,
             fontWeight: "bold",
           }}
