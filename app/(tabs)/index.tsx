@@ -20,7 +20,7 @@ interface profile {
 }
 
 export default function HomeScreen() {
-  const [checkingProfiles, setCheckingProfiles] = useState(true);
+  const [checkingProfiles, setCheckingProfiles] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<profile | null>(null);
 
   const systemTheme = useColorScheme();
