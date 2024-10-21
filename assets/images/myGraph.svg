@@ -1,0 +1,34 @@
+<svg height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background grid -->
+  <line x1="50" y1="150" x2="950" y2="150" stroke="gray" stroke-width="1"/>
+  <line x1="50" y1="100" x2="950" y2="100" stroke="gray" stroke-width="1"/>
+  <line x1="50" y1="50" x2="950" y2="50" stroke="gray" stroke-width="1"/>
+  
+  <!-- Animated path -->
+  <path id="wave" d="M50 150 Q100 100, 150 150 T250 150" 
+    stroke="cyan" stroke-width="3" fill="none"
+    stroke-dasharray="1000" stroke-dashoffset="1000">
+    <animate
+      attributeName="stroke-dashoffset"
+      from="1000"
+      to="0"
+      dur="4s"
+      fill="freeze"
+    />
+  </path>
+  
+  <!-- Animated circle on the wave -->
+  <circle r="5" fill="cyan">
+    <animateMotion dur="0.9s" repeatCount="1" fill="freeze"> 
+       <mpath href="#wave"/>
+    </animateMotion>
+  </circle>
+  
+  <!-- Day labels -->
+  <text x="50" y="170" font-size="12" fill="white">MO</text>
+  <text x="100" y="170" font-size="12" fill="white">TU</text>
+  <text x="150" y="170" font-size="12" fill="white">WE</text>
+  <text x="200" y="170" font-size="12" fill="white">TH</text>
+  <text x="250" y="170" font-size="12" fill="white">FR</text>
+  <text x="300" y="170" font-size="12" fill="white">SA</text>
+</svg>
