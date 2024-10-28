@@ -15,7 +15,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: Colors["dark"].background, // Apply background color
+          backgroundColor: Colors["dark"].backgroundSpecific, // Apply background color
         },
 
       }}

@@ -55,8 +55,7 @@ export default function PodiumProfiles({
           <Text
             numberOfLines={1}
             style={[styles.userName, {
-              // color: systemTheme === "dark" ? Colors.dark.text : Colors.light.text
-              color: "black"
+              color: systemTheme === "dark" ? Colors.dark.text : Colors.light.text
             }]}
           >
             {profile.userName}

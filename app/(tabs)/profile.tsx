@@ -1,82 +1,83 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import data from '@/constants/data';
-import { MotiView } from 'moti';
-import { Easing } from 'react-native-reanimated'; // Correctly import Easing
+import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, StyleSheet, Pressable, Alert } from "react-native";
 
-export default function App() {
-  const [currentIndex, setCurrentIndex] = React.useState<null | number>(null);
+export default function Profiles() {
+  const [ready, setReady] = useState(false);
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const STRIPE_KEY =
+    "pk_test_51QD5KlIxfWfqadDi8MgkAhP7PLToFdQrvuI5A5L12Y5sYqsAenZxA9MMw5nE1Ls1LqozBEOcBnAzSStoCsjPQJzM00pzU38jph";
+
+  const onCheckout = async () => {
+    // 1. Create a payment intent
+    var clientSecret = null;
+    try {
+      const response = await fetch(
+        "http://192.168.1.175:3000/create-payment-intent",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: 1000, // USD $10.00
+            currency: "usd",
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+        return;
+      }
+
+      const data = await response.json();
+      clientSecret = data.paymentIntent;
+
+      console.log(`Payment Intent Client Secret: ${clientSecret}`);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // 2. Initialize the payment sheet
+
+    const initResponse = await initPaymentSheet({
+      merchantDisplayName: "notJust.dev",
+      paymentIntentClientSecret: clientSecret,
+    });
+
+    if (initResponse.error) {
+      console.log(initResponse.error);
+      Alert.alert("Something went wrong on initResponse");
+      return;
+    }
+
+    // 3. Present the payment sheet from stripe
+    await presentPaymentSheet();
+
+    // 4. If payment OK => create the order ....
+  };
 
   return (
-    <View style={styles.container}>
-      <StatusBar hidden />
-      {data.map(({ bg, color, category, subCategories }, index) => {
-        const isOpen = index === currentIndex;
-
-        return (
-          <TouchableOpacity
-            key={category}
-            onPress={() => setCurrentIndex(isOpen ? null : index)}
-            style={styles.cardContainer}
-            activeOpacity={0.9}
-          >
-            <View style={[styles.card, { backgroundColor: bg }]}>
-              <Text style={[styles.heading, { color }]}>{category}</Text>
-
-              <MotiView
-                from={{ opacity: 0, height: 0 }}
-                animate={{
-                  opacity: isOpen ? 1 : 0,
-                  height: isOpen ? 150 : 0, // You can adjust height as needed
-                }}
-                transition={{
-                  type: 'timing',
-                  duration: 500,
-                }}
-                style={styles.subCategoriesList}
-              >
-                {subCategories.map((subCategory) => (
-                  <Text key={subCategory} style={[styles.body, { color }]}>
-                    {subCategory}
-                  </Text>
-                ))}
-              </MotiView>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+    <StripeProvider publishableKey={STRIPE_KEY}>
+      <View style={styles.mainContainer}>
+        <Pressable onPress={onCheckout} style={styles.button}>
+          <Text>Checkout</Text>
+        </Pressable>
+      </View>
+    </StripeProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  cardContainer: {
-    flexGrow: 1,
-  },
-  card: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heading: {
-    fontSize: 38,
-    fontWeight: '900',
-    textTransform: 'uppercase',
-    letterSpacing: -2,
-  },
-  body: {
-    fontSize: 20,
-    lineHeight: 20 * 1.5,
-    textAlign: 'center',
-  },
-  subCategoriesList: {
-    marginTop: 20,
-    overflow: 'hidden', // Ensure content is hidden when collapsed
+  button: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 10,
   },
 });

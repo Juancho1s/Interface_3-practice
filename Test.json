@@ -1,0 +1,36 @@
+{
+  "type": "default",
+  "status": 200,
+  "ok": true,
+  "statusText": "",
+  "headers": {
+    "map": {
+      "access-control-allow-origin": "*",
+      "connection": "keep-alive",
+      "content-length": "80",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Thu, 24 Oct 2024 05:34:40 GMT",
+      "etag": "W/\"50-GPdwg7+GwlIDK3AWEnSwirCsk/s\"",
+      "keep-alive": "timeout=5",
+      "x-powered-by": "Express"
+    }
+  },
+  "url": "http://192.168.100.15:3000/create-payment-intent",
+  "bodyUsed": false,
+  "_bodyInit": {
+    "_data": {
+      "size": 80,
+      "offset": 0,
+      "blobId": "627d253d-b836-4a1a-a7ee-cb1b8d647ed2",
+      "__collector": {}
+    }
+  },
+  "_bodyBlob": {
+    "_data": {
+      "size": 80,
+      "offset": 0,
+      "blobId": "627d253d-b836-4a1a-a7ee-cb1b8d647ed2",
+      "__collector": {}
+    }
+  }
+}
